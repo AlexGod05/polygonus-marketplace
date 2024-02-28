@@ -19,14 +19,16 @@ Welcome to the Marketplace API documentation. This API provides functionalities 
 - NestJS
 - Prisma (ORM)
 - MySQL
+- Docker
 
 ## Installation
 
 1. Clone this repository.
-2. Install dependencies using `npm install`.
-3. Set up environment variables in a `.env` file.
-4. npx prisma migrate dev --name init
-5. Run the server locally using `npm start`.
+2. run 'docker-compose up'
+3. Install dependencies using `npm install`.
+4. Set up environment variables in a `.env` file.
+5. npx prisma migrate dev --name init
+6. Run the server locally using `npm start`.
 
 ## API Endpoints
 
