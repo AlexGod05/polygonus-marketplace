@@ -25,7 +25,8 @@ Welcome to the Marketplace API documentation. This API provides functionalities 
 1. Clone this repository.
 2. Install dependencies using `npm install`.
 3. Set up environment variables in a `.env` file.
-4. Run the server locally using `npm start`.
+4. npx prisma migrate dev --name init
+5. Run the server locally using `npm start`.
 
 ## API Endpoints
 
