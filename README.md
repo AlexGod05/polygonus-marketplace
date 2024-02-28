@@ -1,73 +1,83 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Marketplace API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Welcome to the Marketplace API documentation. This API provides functionalities to create and manage a marketplace similar to Ebay or Amazon.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- List products.
+- Search products.
+- View product detail.
+- Add products to the shopping cart.
+- View shopping cart detail.
+- Remove products from the shopping cart.
+- Display products by category.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Technologies Used
+
+- Node.js
+- TypeScript
+- NestJS
+- Prisma (ORM)
+- MySQL
 
 ## Installation
 
-```bash
-$ pnpm install
-```
+1. Clone this repository.
+2. Install dependencies using `npm install`.
+3. Set up environment variables in a `.env` file.
+4. Run the server locally using `npm start`.
 
-## Running the app
+## API Endpoints
 
-```bash
-# development
-$ pnpm run start
+- **GET /marketplace/all-products**
+  - Lists all available products.
+- **GET /marketplace/search-product-with-code?productCode=CODE**
+  - Searches for a product by its code.
+- **GET /marketplace/search-product-detail-with-code?productCode=CODE**
+  - Searches for the detail of a product by its code.
+- **GET /marketplace/search-products-by-category-code?categoryCode=CODE**
+  - Lists all products in a category.
+- **GET /marketplace/detail-shopping-cart**
+  - Gets the detail of the shopping cart.
+- **POST /marketplace/add-product-shopping-cart**
+  - Adds a product to the shopping cart.
+- **DELETE /marketplace/delete-product-shopping-cart?productCode=CODE**
+  - Deletes a product from the shopping cart.
 
-# watch mode
-$ pnpm run start:dev
+## Usage
 
-# production mode
-$ pnpm run start:prod
-```
+1. Make a request to any of the specified endpoints above.
+2. You will receive a response with the requested information or an error message if applicable.
+3. Import the provided Insomnia file located at [insomnia_requests.json](docs/Insomnia_2024-02-28.json) to consume the API endpoints easily.
 
-## Test
+## Running the Service
 
-```bash
-# unit tests
-$ pnpm run test
+- The service is running on port 8080.
+- Access the Swagger documentation at [http://localhost:8080/docs](http://localhost:8080/docs).
 
-# e2e tests
-$ pnpm run test:e2e
+## Contribution
 
-# test coverage
-$ pnpm run test:cov
-```
+If you wish to contribute to this project, please follow these steps:
 
-## Support
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/feature-name`).
+3. Make your changes and commit them (`git commit -am 'Add new feature'`).
+4. Push your changes to the remote repository (`git push origin feature/feature-name`).
+5. Create a new pull request.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Author
 
-## Stay in touch
+- Name: Claiderman Alexander Lozano Cardona
+- Email: lozanocardona200938@gmail.com
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## Guides
+
+- YouTube
+  - @FaztCode
+  - @codrrdev
+  - @marluanespiritusanto8458
+- ChatGPT3.5
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

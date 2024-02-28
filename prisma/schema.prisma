@@ -14,20 +14,34 @@ datasource db {
 }
 
 model Product {
-  product_id  Int        @id @default(autoincrement())
-  code        String
-  name        String
-  description String?
-  price       Float
-  category    String
-  details     ProductDetail[]
+  product_id    Int      @id @default(autoincrement())
+  code          String   @unique
+  name          String
+  description   String?
+  price         Float
+  category      Category @relation(fields: [category_id], references: [category_id])
+  category_id   Int
+  stock         Int?
+  size          String?
+  color         String?
+  shoppingCarts ShoppingCart[]
+
+  @@index([category_id], name: "category_id_index")
 }
 
-model ProductDetail {
-  product_detail_id Int      @id @default(autoincrement())
-  product_id        Int
-  stock             Int
-  size              String?
-  color             String?
-  product           Product   @relation(fields: [product_id], references: [product_id])
+model Category {
+  category_id   Int      @id @default(autoincrement())
+  code          String   @unique
+  name          String
+  description   String?
+  products      Product[]
+}
+
+model ShoppingCart {
+  cart_id       Int      @id @default(autoincrement())
+  product_id    Int      @unique
+  product       Product  @relation(fields: [product_id], references: [product_id])
+  quantity      Int  
+
+  @@index([product_id], name: "product_id_index")    
 }

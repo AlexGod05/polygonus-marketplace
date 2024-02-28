@@ -11,6 +11,8 @@ services:
       MYSQL_USER: polygonus
       MYSQL_PASSWORD: root
     volumes:
-      - ./mysql:/var/lib/mysql
+      - ./initdb/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --init-file /docker-entrypoint-initdb.d/init.sql
+
     ports:
       - "3307:3306"
