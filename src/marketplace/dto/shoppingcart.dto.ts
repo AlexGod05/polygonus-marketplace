@@ -1,34 +1,35 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Transform } from 'class-transformer';
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  MaxLength,
-  Min,
-} from 'class-validator';
+import { Expose } from 'class-transformer';
+import { IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
+import { ProductDTO } from './product.dto';
 
 /**
- * Data Transfer Object (DTO) for representing shopping cart items.
- * This DTO is used for adding items to the shopping cart.
+ * Data Transfer Object (DTO) for representing the complete shopping cart detail.
  */
 export class ShoppingCartDTO {
-  @ApiProperty()
+  @ApiProperty({ type: [ProductDTO] })
   @Expose()
-  @IsString({ message: 'ProductCode must be a string' })
-  @IsNotEmpty({ message: 'ProductCode is required' })
-  @MaxLength(6, { message: 'ProductCode must not exceed 6 characters' })
-  readonly productCode: string;
+  readonly listProduct: ProductDTO[];
 
   @ApiProperty()
   @Expose()
-  @IsNumber({ allowNaN: false }, { message: 'Quantity must be a number' })
-  @IsNotEmpty({ message: 'Quantity is required' })
-  @Min(1, { message: 'Quantity must be at least 1' })
-  readonly quantity: number;
+  @IsNumber({}, { message: 'CantidadProducts must be a number' })
+  @IsNotEmpty({ message: 'CantidadProducts is required' })
+  readonly cantidadProducts: number;
 
-  constructor(productCode: string, quantity: number) {
-    this.productCode = productCode;
-    this.quantity = quantity;
+  @ApiProperty()
+  @Expose()
+  @IsNumber({}, { message: 'Total must be a number' })
+  @IsNotEmpty({ message: 'Total is required' })
+  readonly total: number;
+
+  constructor(
+    listProduct: ProductDTO[],
+    cantidadProducts: number,
+    total: number,
+  ) {
+    this.listProduct = listProduct;
+    this.cantidadProducts = cantidadProducts;
+    this.total = total;
   }
 }

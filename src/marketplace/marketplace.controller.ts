@@ -12,6 +12,8 @@ import { ProductDTO } from './dto/product.dto';
 import { ShoppingCartDTO } from './dto/shoppingcart.dto';
 import { GenericResponse } from 'src/shader/response/http.response';
 import { ApiBody, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { classToPlain } from 'class-transformer';
+import { ProductItemDTO } from './dto/productitem.dto';
 
 /**
  * Controller for handling marketplace-related endpoints.
@@ -154,7 +156,7 @@ export class MarketplaceController {
     status: HttpStatus.INTERNAL_SERVER_ERROR,
     description: 'Error Internal Server',
   })
-  async allShoppingCart(): Promise<GenericResponse<ShoppingCartDTO[]>> {
+  async allShoppingCart(): Promise<GenericResponse<ShoppingCartDTO>> {
     return await this.productService.detailShoppingCart();
   }
 
@@ -170,7 +172,7 @@ export class MarketplaceController {
    * @returns Promise<GenericResponse<any>>
    */
   @Post('add-product-shopping-cart')
-  @ApiBody({ type: ShoppingCartDTO })
+  @ApiBody({ type: ProductDTO })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'product added to shopping cart successfully',
@@ -188,9 +190,9 @@ export class MarketplaceController {
     description: 'Error Internal Server',
   })
   async addProductShoppingCart(
-    @Body() shoppingCartDto: ShoppingCartDTO,
+    @Body() productItemDto: ProductItemDTO,
   ): Promise<GenericResponse<any>> {
-    return await this.productService.addProductShoppigCart(shoppingCartDto);
+    return await this.productService.addProductShoppigCart(productItemDto);
   }
 
   /**

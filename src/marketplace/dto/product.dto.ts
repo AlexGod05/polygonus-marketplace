@@ -61,4 +61,19 @@ export class ProductDTO {
   @IsNotEmpty({ message: 'Size is required' })
   @MaxLength(50, { message: 'Size must not exceed 50 characters' })
   readonly size: string;
+
+  readonly quantity: number;
+  readonly totalPrice: number;
+
+  constructor(
+    productCode: string,
+    quantity: number,
+    price: number,
+    totalPrice: number,
+  ) {
+    this.productCode = productCode;
+    this.quantity = quantity;
+    this.price = price;
+    this.totalPrice = totalPrice;
+  }
 }

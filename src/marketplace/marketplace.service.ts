@@ -12,6 +12,7 @@ import { plainToClass } from 'class-transformer';
 import { ShoppingCartDTO } from './dto/shoppingcart.dto';
 import { GenericResponse } from 'src/shader/response/http.response';
 import { GenericException } from 'src/shader/exception/http.exception';
+import { ProductItemDTO } from './dto/productitem.dto';
 
 @Injectable()
 export class ProductService {
@@ -156,7 +157,7 @@ export class ProductService {
    * Throws an error if the shopping cart is empty.
    * @returns Promise<GenericResponse<ShoppingCartDTO[]>>
    */
-  async detailShoppingCart(): Promise<GenericResponse<ShoppingCartDTO[]>> {
+  async detailShoppingCart(): Promise<GenericResponse<ShoppingCartDTO>> {
     try {
       const listShoppingCart: ShoppingCart[] =
         await this.prisma.shoppingCart.findMany({
@@ -165,20 +166,36 @@ export class ProductService {
           },
         });
       this.shoppingCartEmpty(listShoppingCart);
-      const listShoppingCartDto = await Promise.all(
+
+      const listProductDto = await Promise.all(
         listShoppingCart.map(async (shoppingCart: ShoppingCart) => {
           const product = await this.prisma.product.findFirst({
             where: {
               product_id: shoppingCart.product_id,
             },
           });
-          return new ShoppingCartDTO(product.code, shoppingCart.quantity);
+          return new ProductDTO(
+            product.code,
+            shoppingCart.quantity,
+            product.price,
+            product.price * shoppingCart.quantity,
+          );
         }),
       );
+      const totalPrice = listProductDto.reduce(
+        (total, productDto) => total + productDto.totalPrice,
+        0,
+      );
+      const shoppingCartDto = new ShoppingCartDTO(
+        listProductDto,
+        listProductDto.length,
+        totalPrice,
+      );
+
       return new GenericResponse(
         HttpStatus.OK,
         'Detail the shopping cart',
-        listShoppingCartDto,
+        shoppingCartDto,
       );
     } catch (error) {
       if (error instanceof GenericException) {
@@ -199,10 +216,10 @@ export class ProductService {
    * @returns Promise<GenericResponse<any>>
    */
   async addProductShoppigCart(
-    shoppingCartDto: ShoppingCartDTO,
+    productItemDto: ProductItemDTO,
   ): Promise<GenericResponse<ShoppingCartDTO[]>> {
     try {
-      const productCode = shoppingCartDto.productCode;
+      const productCode = productItemDto.productCode;
       const product = await this.prisma.product.findFirst({
         where: {
           code: productCode,
@@ -211,7 +228,7 @@ export class ProductService {
       this.productNotFound(product, productCode);
       const newStock = this.stockProduct(
         product.stock,
-        shoppingCartDto.quantity,
+        productItemDto.quantity,
       );
       this.updateStockProduct(product, newStock);
       const existingCartItem = await this.prisma.shoppingCart.findFirst({
@@ -227,7 +244,7 @@ export class ProductService {
           },
           data: {
             quantity: {
-              increment: shoppingCartDto.quantity,
+              increment: productItemDto.quantity,
             },
           },
         });
@@ -235,7 +252,7 @@ export class ProductService {
         await this.prisma.shoppingCart.create({
           data: {
             product_id: product.product_id,
-            quantity: shoppingCartDto.quantity,
+            quantity: productItemDto.quantity,
           },
         });
       }
@@ -248,7 +265,6 @@ export class ProductService {
       if (error instanceof GenericException) {
         return new GenericException(error.status, error.message, error.data);
       }
-      console.log('error: ', error);
       return new GenericException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         'Error Internal Server',
@@ -302,7 +318,6 @@ export class ProductService {
       if (error instanceof GenericException) {
         return new GenericException(error.status, error.message, error.data);
       }
-      console.log('error: ', error);
       return new GenericException(
         HttpStatus.INTERNAL_SERVER_ERROR,
         'Error Internal Server',
